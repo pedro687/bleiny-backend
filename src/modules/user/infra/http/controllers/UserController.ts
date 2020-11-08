@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import CreateUserService from '@modules/user/services/CreateUserService';
+import FindUsersService from '@modules/user/services/FindUsersService';
 import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
@@ -46,5 +47,13 @@ export default class UserController {
     });
 
     return res.status(200).json(classToClass(createdUser));
+  }
+
+  public async index(req: Request, res: Response): Promise<Response> {
+    const findedUsers = container.resolve(FindUsersService);
+
+    const findUsers = await findedUsers.execute();
+
+    return res.status(200).json(classToClass(findUsers));
   }
 }
