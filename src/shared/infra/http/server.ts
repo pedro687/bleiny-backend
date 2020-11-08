@@ -4,14 +4,14 @@ import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import AppError from '@shared/errors/AppError';
 import cors from 'cors';
-//import Router from './routes';
+import Router from './routes';
 
 const app = express();
 const port = 3333 || process.env.port;
 
 app.use(express.json());
 
-//app.use(Router);
+app.use(Router);
 
 app.use(cors());
 
