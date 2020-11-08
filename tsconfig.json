@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "esModuleInterop": true,
+        "strict": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "module": "CommonJS",
+        "forceConsistentCasingInFileNames": true,
+        "baseUrl": "./src",
+        "paths": {
+          "@modules/*": ["modules/*"],
+          "@config/*": ["config/*"],
+          "@shared/*": ["shared/*"],
+        },
+        "strictPropertyInitialization": false
+    }
+}
