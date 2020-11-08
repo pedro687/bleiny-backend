@@ -5,6 +5,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import AppError from '@shared/errors/AppError';
 import cors from 'cors';
 import Router from './routes';
+import '@shared/infra/typeorm';
+import '@shared/container';
 
 const app = express();
 const port = 3333 || process.env.port;
