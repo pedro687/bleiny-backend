@@ -46,13 +46,13 @@ export default class CreateUserService {
     const verifyEmail = await this.userRepository.findByEmail(email);
 
     if (verifyEmail) {
-      throw new AppError('This email already exists!');
+      throw new AppError('This email already exists!', 403);
     }
 
     const verifyUsername = await this.userRepository.findByUsername(username);
 
     if (verifyUsername) {
-      throw new AppError('This username already exists!');
+      throw new AppError('This username already exists!', 403);
     }
 
     const passwordHash = await hash(password, 8);
@@ -69,7 +69,7 @@ export default class CreateUserService {
     });
 
     if (!createdUser) {
-      throw new AppError('Error, try again later!');
+      throw new AppError('Error, try again later!', 403);
     }
 
     return createdUser;

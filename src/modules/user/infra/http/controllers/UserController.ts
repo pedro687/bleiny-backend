@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import CreateUserService from '@modules/user/services/CreateUserService';
 import FindUsersService from '@modules/user/services/FindUsersService';
+import FindUserService from '@modules/user/services/FindUsersService';
 import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
@@ -34,7 +35,7 @@ export default class UserController {
 
     const createUser = container.resolve(CreateUserService);
 
-    const createdUser = await createUser.execute({
+    return await createUser.execute({
       username,
       full_name,
       age,
@@ -44,9 +45,10 @@ export default class UserController {
       city,
       cpf,
       isInfluencer,
-    });
+    })
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(403).json(err));
 
-    return res.status(200).json(classToClass(createdUser));
   }
 
   public async index(req: Request, res: Response): Promise<Response> {
@@ -55,5 +57,19 @@ export default class UserController {
     const findUsers = await findedUsers.execute();
 
     return res.status(200).json(classToClass(findUsers));
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(401).json({ message: "parameter not found" });
+    }
+
+    const findedUser = container.resolve(FindUserService);
+
+    const findUser = await findedUser.execute();
+
+    return res.status(200).json(classToClass(findUser));
   }
 }
