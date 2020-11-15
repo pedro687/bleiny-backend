@@ -36,7 +36,7 @@ export default class UserController {
 
     const createUser = container.resolve(CreateUserService);
 
-    return await createUser
+    const createdUser = await createUser
       .execute({
         username,
         full_name,
@@ -47,9 +47,9 @@ export default class UserController {
         city,
         cpf,
         isInfluencer,
-      })
-      .then(data => res.status(200).json(data))
-      .catch(err => res.status(403).json(err));
+      });
+
+      return res.status(200).json(classToClass(createdUser));
   }
 
   public async index(req: Request, res: Response): Promise<Response> {
