@@ -6,6 +6,5 @@ export default interface ICreateUserDTO {
   email: string;
   UF: string;
   city: string;
-  cpf?: string;
   isInfluencer: boolean;
 }

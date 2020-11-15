@@ -15,6 +15,7 @@
           "@config/*": ["config/*"],
           "@shared/*": ["shared/*"],
         },
-        "strictPropertyInitialization": false
+        "strictPropertyInitialization": false,
+        "resolveJsonModule": true,
     }
 }

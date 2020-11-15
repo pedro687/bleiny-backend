@@ -1,34 +1,20 @@
+import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import ICreateUserDTO from '../DTOs/ICreateUserDTO';
+import IUserRepository from '../repositories/IUserRepository';
 import Users from '@modules/user/infra/typeorm/entities/Users';
 import { hash } from 'bcryptjs';
-
-//global exception
 import AppError from '@shared/errors/AppError';
-
-//interfaces
-import IUserRepository from '@modules/user/repositories/IUserRepositorie';
-
-interface IRequest {
-  username: string;
-  full_name: string;
-  age: number;
-  password: string;
-  email: string;
-  UF: string;
-  city: string;
-  cpf?: string;
-  isInfluencer: boolean;
-}
 
 @injectable()
 export default class CreateUserService {
-  private userRepository: IUserRepository;
+  private usersRepository: IUserRepository;
 
   constructor(
     @inject('UsersRepository')
     userRepository: IUserRepository,
   ) {
-    this.userRepository = userRepository;
+    this.usersRepository = userRepository;
   }
 
   public async execute({
@@ -39,24 +25,16 @@ export default class CreateUserService {
     email,
     UF,
     city,
-    cpf,
     isInfluencer,
-  }: IRequest): Promise<Users> {
-
-    const verifyEmail = await this.userRepository.findByEmail(email);
+  }: ICreateUserDTO): Promise<Users | undefined> {
+    const verifyEmail = await this.usersRepository.findByEmail(email);
 
     if (verifyEmail) {
-      throw new AppError('This email already exists!', 403);
-    }
-
-    const verifyUsername = await this.userRepository.findByUsername(username);
-
-    if (verifyUsername) {
-      throw new AppError('This username already exists!', 403);
+      throw new AppError('That email already exists', 400);
     }
 
     const passwordHash = await hash(password, 8);
-    const createdUser = await this.userRepository.create({
+    const createdUser = await this.usersRepository.create({
       username,
       full_name,
       age,
@@ -64,7 +42,6 @@ export default class CreateUserService {
       email,
       UF,
       city,
-      cpf,
       isInfluencer,
     });
 
