@@ -41,7 +41,7 @@ export default class FakeUserRepository implements IUserRepository{
 
   public async findByUsername(username: string): Promise<Users | undefined> {
     const findUserName = this.users.find(user => user.username === username);
-    console.log(findUserName);
+
     return findUserName;
   }
 
