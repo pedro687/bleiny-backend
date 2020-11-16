@@ -17,4 +17,6 @@ export default interface IUserRepository {
 
   save(user: Users): Promise<Users>;
 
+  findByUsername(username: string): Promise<Users | undefined>;
+
 }

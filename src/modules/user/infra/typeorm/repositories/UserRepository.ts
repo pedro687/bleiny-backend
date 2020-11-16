@@ -44,6 +44,12 @@ export default class UserRepository implements IUserRepository {
     return verifyEmail;
   }
 
+  public async findByUsername(username: string): Promise<Users | undefined> {
+    const verifyUsername = await this.ormConfig.findOne({ where: { username: username } });
+
+    return verifyUsername;
+  }
+
   public async save(user: Users): Promise<Users> {
     return this.ormConfig.save(user);
   }

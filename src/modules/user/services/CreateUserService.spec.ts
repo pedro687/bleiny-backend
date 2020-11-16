@@ -31,6 +31,32 @@ describe('CreateUser', () => {
       UF: 'SP',
       age: 11,
       city: 'Guarujá',
+      email: 'Pedro@mail.cm',
+      full_name: 'Pedro Emanoel do Nascimento',
+      isInfluencer: false,
+      password: '12345',
+      username: 'Renato Gaucho',
+    });
+
+    await expect(
+      createUser.execute({
+        UF: 'SP',
+        age: 11,
+        city: 'Guarujá',
+        email: 'Pedro@mail.cm',
+        full_name: 'Pedro Emanoel do Nascimento',
+        isInfluencer: false,
+        password: '12345',
+        username: 'Renato Gaucho',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should NOT be able to create a two users with same username', async () => {
+    await createUser.execute({
+      UF: 'SP',
+      age: 11,
+      city: 'Guarujá',
       email: 'Pedro@mail.com',
       full_name: 'Pedro Emanoel do Nascimento',
       isInfluencer: false,
@@ -50,5 +76,5 @@ describe('CreateUser', () => {
         username: 'Renato Gaucho',
       }),
     ).rejects.toBeInstanceOf(AppError);
-  });
+  })
 });

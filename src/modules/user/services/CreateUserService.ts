@@ -33,6 +33,12 @@ export default class CreateUserService {
       throw new AppError('That email already exists', 400);
     }
 
+    const verifyUsername = await this.usersRepository.findByUsername(username);
+
+    if (verifyUsername) {
+      throw new AppError('That username already exists', 400);
+    }
+
     const passwordHash = await hash(password, 8);
     const createdUser = await this.usersRepository.create({
       username,
