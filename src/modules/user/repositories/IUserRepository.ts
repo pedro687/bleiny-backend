@@ -14,4 +14,7 @@ export default interface IUserRepository {
   }: ICreateUserDTO): Promise<Users | undefined>;
 
   findByEmail(email: string): Promise<Users | undefined>;
+
+  save(user: Users): Promise<Users>;
+
 }

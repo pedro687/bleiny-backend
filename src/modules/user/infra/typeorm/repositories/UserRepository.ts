@@ -43,4 +43,8 @@ export default class UserRepository implements IUserRepository {
 
     return verifyEmail;
   }
+
+  public async save(user: Users): Promise<Users> {
+    return this.ormConfig.save(user);
+  }
 }
