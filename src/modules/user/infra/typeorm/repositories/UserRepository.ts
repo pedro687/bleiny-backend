@@ -50,6 +50,12 @@ export default class UserRepository implements IUserRepository {
     return verifyUsername;
   }
 
+  public async findAll(): Promise<Array<Users | undefined>> {
+    const findUser = await this.ormConfig.find();
+
+    return findUser;
+  }
+
   public async save(user: Users): Promise<Users> {
     return this.ormConfig.save(user);
   }
