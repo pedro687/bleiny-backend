@@ -1,7 +1,6 @@
 import Users from '@modules/user/infra/typeorm/entities/Users';
-import AppError from '@shared/errors/AppError';
 import ICreateUserDTO from '../DTOs/ICreateUserDTO';
-
+import IFindAllUsersDTO from '../DTOs/IFindAllUsers';
 export default interface IUserRepository {
   create({
     username,
@@ -16,7 +15,7 @@ export default interface IUserRepository {
 
   findByEmail(email: string): Promise<Users | undefined>;
 
-  findAll(): Promise<Array<Users | undefined>>;
+  findAll({ except_user_id }: IFindAllUsersDTO): Promise<Users[] | undefined>;
 
   save(user: Users): Promise<Users>;
 

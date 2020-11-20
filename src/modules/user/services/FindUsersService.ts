@@ -16,8 +16,8 @@ export default class FindUsersService {
     this.usersRepository = usersRepository;
   }
 
-  public async execute(): Promise<Array<Users>> {
-    const findUsers = await this.usersRepository.findAll();
+  public async execute(user_id: string): Promise<Array<Users>> {
+    const findUsers = await this.usersRepository.findAll({except_user_id: user_id});
 
     if (!findUsers) {
       throw new AppError('No users found', 401);

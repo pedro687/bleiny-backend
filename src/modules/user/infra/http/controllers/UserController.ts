@@ -39,9 +39,11 @@ export default class UserController {
   }
 
   public async index(req: Request, res: Response): Promise<Response> {
+    const user_id = req.params.id;
+
     const findedUsers = container.resolve(FindUsersService);
 
-    const findUsers = await findedUsers.execute();
+    const findUsers = await findedUsers.execute(user_id);
 
     return res.status(200).json(classToClass(findUsers));
   }
