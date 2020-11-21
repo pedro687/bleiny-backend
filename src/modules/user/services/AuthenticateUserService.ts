@@ -5,6 +5,7 @@ import { compare } from 'bcryptjs';
 import AppError from '@shared/errors/AppError';
 import { sign } from 'jsonwebtoken';
 import AuthConfig from '@config/Auth';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   username: string,
@@ -19,12 +20,17 @@ interface IResponse {
 @injectable()
 export default class AuthenticateUserService {
   private usersRepository: IUserRepository;
+  private hashProvider: IHashProvider;
 
   constructor(
     @inject('UsersRepository')
     userRepository: IUserRepository,
+
+    @inject('HashProvider')
+    HashProvider: IHashProvider,
   ) {
     this.usersRepository = userRepository;
+    this.hashProvider = HashProvider;
   }
 
   public async execute({username, password}: IRequest): Promise<IResponse> {
@@ -39,7 +45,7 @@ export default class AuthenticateUserService {
       );
     }
 
-    const passwordCompare = await compare(password, user.password);
+    const passwordCompare = await this.hashProvider.compareHash(password, user.password);
 
     if (!passwordCompare) {
       throw new AppError(
