@@ -39,11 +39,16 @@ export default class UserController {
   }
 
   public async index(req: Request, res: Response): Promise<Response> {
-    const user_id = req.params.id;
+    const user_id = req.user.id;
 
+    if (!user_id) {
+      return res.status(400).json({ message: 'Not Authorized' });
+    }
     const findedUsers = container.resolve(FindUsersService);
 
-    const findUsers = await findedUsers.execute(user_id);
+    const findUsers = await findedUsers.execute({
+      except_user_id: user_id,
+    });
 
     return res.status(200).json(classToClass(findUsers));
   }
