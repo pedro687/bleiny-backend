@@ -3,18 +3,23 @@ import { inject, injectable } from 'tsyringe';
 import ICreateUserDTO from '../DTOs/ICreateUserDTO';
 import IUserRepository from '../repositories/IUserRepository';
 import Users from '@modules/user/infra/typeorm/entities/Users';
-import { hash } from 'bcryptjs';
 import AppError from '@shared/errors/AppError';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 @injectable()
 export default class CreateUserService {
   private usersRepository: IUserRepository;
+  private hashProvider: IHashProvider;
 
   constructor(
     @inject('UsersRepository')
     userRepository: IUserRepository,
+
+    @inject('HashProvider')
+    HashProvider: IHashProvider,
   ) {
     this.usersRepository = userRepository;
+    this.hashProvider = HashProvider;
   }
 
   public async execute({
@@ -39,7 +44,7 @@ export default class CreateUserService {
       throw new AppError('That username already exists', 400);
     }
 
-    const passwordHash = await hash(password, 8);
+    const passwordHash = await this.hashProvider.generateHash(password);
     const createdUser = await this.usersRepository.create({
       username,
       full_name,
