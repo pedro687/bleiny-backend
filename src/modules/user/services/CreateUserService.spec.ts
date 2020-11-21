@@ -1,14 +1,18 @@
 import CreateUserService from './CreateUserService';
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 import AppError from '@shared/errors/AppError';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
-let fakeUsersRepository: FakeUserRepository;
+
+let fakeUser: FakeUserRepository;
 let createUser: CreateUserService;
+let fakeHash: FakeHashProvider;
 
-describe('CreateUser', () => {
+describe('AuthenticateUser', () => {
   beforeEach(() => {
-    fakeUsersRepository = new FakeUserRepository();
-    createUser = new CreateUserService(fakeUsersRepository);
+    fakeUser = new FakeUserRepository();
+    fakeHash = new FakeHashProvider();
+    createUser = new CreateUserService(fakeUser, fakeHash);
   });
 
   test('should be able to create a new user', async () => {
