@@ -2,9 +2,13 @@ import { Request, Response } from 'express';
 import CreateUserService from '@modules/user/services/CreateUserService';
 import FindUsersService from '@modules/user/services/FindUsersService';
 import { container } from 'tsyringe';
+import FindByIdService from '@modules/user/services/findByIdService';
 
 export default class UserController {
-  public async create(req: Request, res: Response): Promise<Response | undefined> {
+  public async create(
+    req: Request,
+    res: Response,
+  ): Promise<Response | undefined> {
     const requiredFields = [
       'username',
       'full_name',
@@ -50,5 +54,15 @@ export default class UserController {
     });
 
     return res.status(200).json(findUsers);
+  }
+
+  public async show(req: Request, res: Response): Promise<Response> {
+    const id = req.params.id;
+
+    const findUser = container.resolve(FindByIdService);
+
+    const users = await findUser.execute(id);
+
+    return res.status(200).json(users);
   }
 }
