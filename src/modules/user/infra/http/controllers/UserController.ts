@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import CreateUserService from '@modules/user/services/CreateUserService';
 import FindUsersService from '@modules/user/services/FindUsersService';
 import { container } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 export default class UserController {
   public async create(req: Request, res: Response): Promise<Response | undefined> {
@@ -34,7 +33,7 @@ export default class UserController {
         });
       }
 
-      return res.status(200).json(classToClass(createdUser));
+      return res.status(200).json(createdUser);
     }
   }
 
@@ -50,6 +49,6 @@ export default class UserController {
       except_user_id: user_id,
     });
 
-    return res.status(200).json(classToClass(findUsers));
+    return res.status(200).json(findUsers);
   }
 }

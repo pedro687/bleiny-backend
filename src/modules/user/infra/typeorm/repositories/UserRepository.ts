@@ -40,26 +40,32 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async findByEmail(email: string): Promise<Users | undefined> {
-    const verifyEmail = await this.ormConfig.findOne({ where: { email: email } });
+    const verifyEmail = await this.ormConfig.findOne({
+      where: { email: email },
+    });
 
     return verifyEmail;
   }
 
   public async findByUsername(username: string): Promise<Users | undefined> {
-    const verifyUsername = await this.ormConfig.findOne({ where: { username: username } });
+    const verifyUsername = await this.ormConfig.findOne({
+      where: { username: username },
+    });
 
     return verifyUsername;
   }
 
-  public async findAll({ except_user_id }: IFindAllUsersDTO): Promise<Users[] | undefined> {
+  public async findAll({
+    except_user_id,
+  }: IFindAllUsersDTO): Promise<Users[] | undefined> {
     let users: Users[];
 
     if (except_user_id) {
       users = await this.ormConfig.find({
         where: {
-          id: Not(except_user_id)
-        }
-      })
+          id: Not(except_user_id),
+        },
+      });
     } else {
       users = await this.ormConfig.find();
     }
@@ -69,5 +75,9 @@ export default class UserRepository implements IUserRepository {
 
   public async save(user: Users): Promise<Users> {
     return this.ormConfig.save(user);
+  }
+
+  public async findById(id: string): Promise<Users | undefined> {
+    return await this.ormConfig.findOne(id);
   }
 }

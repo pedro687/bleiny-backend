@@ -4,7 +4,7 @@ import Users from '@modules/user/infra/typeorm/entities/Users';
 import { uuid } from 'uuidv4';
 import IFindAllUsersDTO from '@modules/user/DTOs/IFindAllUsers';
 
-export default class FakeUserRepository implements IUserRepository{
+export default class FakeUserRepository implements IUserRepository {
   private users: Users[] = [];
 
   public async create({
@@ -46,7 +46,9 @@ export default class FakeUserRepository implements IUserRepository{
     return findUserName;
   }
 
-  public async findAll({except_user_id}: IFindAllUsersDTO ): Promise<Users[] | undefined> {
+  public async findAll({
+    except_user_id,
+  }: IFindAllUsersDTO): Promise<Users[] | undefined> {
     let users = this.users;
 
     if (except_user_id) {
@@ -62,5 +64,12 @@ export default class FakeUserRepository implements IUserRepository{
     this.users[findIndex] = user;
 
     return user;
+  }
+
+  public async findById(id: string): Promise<Users | undefined> {
+    let users = this.users;
+
+    const findUser = users.find(user => user.id === id);
+    return findUser;
   }
 }

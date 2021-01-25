@@ -21,4 +21,5 @@ export default interface IUserRepository {
 
   findByUsername(username: string): Promise<Users | undefined>;
 
-}
+  findById(id: string): Promise<Users | undefined>;
+  }
